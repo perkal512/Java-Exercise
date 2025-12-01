@@ -5,10 +5,10 @@ import java.util.*;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		Scanner sc = new Scanner(System.in);
         TaskRepository repo = new TaskRepository("tasks.json");
-//        TaskService service = new TaskService(repo);
+        TaskService service = new TaskService(repo);
 
         while (true) {
 
@@ -28,14 +28,10 @@ public class Main {
 
             switch (choice) {
                 case 1:
-//                    System.out.print("Please enter task id : "); 
-////                    להמיר את הSTRING לINT
-//                    int id = Integer.parseInt(sc.nextLine());
                     System.out.print("Please enter task title: ");
                     String title = sc.nextLine();
                     System.out.print("Please enter task description: ");
                     String desc = sc.nextLine();
-                   // שולחת ID=0 בהמשך יהיה עידכון ל-ID לפי הבדיקה שיהיה ייחודי
                     repo.add(new Task(0, title, desc, Task.Status.NEW));
                     break;
 
@@ -49,8 +45,6 @@ public class Main {
                         System.out.print("New description: ");
                         existing.setDescription(sc.nextLine());
                         System.out.println("Set Status: ");
-//                        לבדוק האם לתת כאן לעדכן את הSTATUS או שזה יקרה במוד העיסקי
-//                        existing.setStatus(sc.nextLine());
                         repo.update(existing);
                     } else {
                         System.out.println("Task id doesn't exist");
@@ -58,8 +52,6 @@ public class Main {
                     break;
 
                 case 3:
-                //	האם לבדוק כאן אם הID קיים או שאין צורך?
-                //האם זה תקין להשתמש במשתנים מלמעלה?
                     System.out.print("ID to delete: ");
                     uid = Integer.parseInt(sc.nextLine());
                     existing = repo.getById(uid);
@@ -82,14 +74,23 @@ public class Main {
                     break;
 
                 case 5:
-//					האם יותר יפה לבדוק האם הID קיים ולהדפיס אם לא?                	
                     System.out.print("ID: ");
                     System.out.println(repo.getById(Integer.parseInt(sc.nextLine())));
+                    break;                          
+                case 6:
+                    System.out.print("ID: ");
+                    service.markDone(Integer.parseInt(sc.nextLine()));
                     break;
 
-              
+                case 7:
+//				לבדוק האם יותר יפה שאם לא מצא TEXT שיציד הודעה למשתמש לא נמצא
+                    System.out.print("Search text: ");
+                    service.search(sc.nextLine()).forEach(System.out::println);
+                    break;
 
-             
+                case 8:
+                    service.listSortedByStatus().forEach(System.out::println);
+                    break;
 
                 case 9:
                     return;
