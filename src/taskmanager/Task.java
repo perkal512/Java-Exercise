@@ -6,22 +6,57 @@ public class Task {
 		NEW, IN_PROGRESS, DONE
 	}
 	
-	private String id;
+	private int id;
 	private String title;
 	private String description;
 	private Status status;
 	
-	public Task(String id,String title, String description, Status status) {
+	public Task(int id,String title, String description, Status status) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.status = status;
 	}
 	
-	public String getId() {
+	public Task(String json) {
+		json = json.replace("{", "").replace("}", "");
+		String[] parts = json.split(",");
+
+		int id = -1;
+		String title = "", description = "";
+		Status status = Status.NEW;
+
+		for (String part : parts) {
+			String[] kv = part.split(":");
+			String key = kv[0].replace("\"", "").trim();
+			String value = kv[1].replace("\"", "").trim();
+
+			switch (key) {
+			case "id":
+				id = Integer.parseInt(value);
+				this.id=id;
+				break;
+			case "title":
+				title = value;
+				this.title=title;
+				break;
+			case "description":
+				description = value;
+				this.description=description;
+				break;
+			case "status":
+				this.status=status;
+				status = Status.valueOf(value);
+				break;
+			}
+		}
+
+	}
+	
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getTitle() {
@@ -46,6 +81,12 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [id=" + id + ", title=" + title + ", description=" + description + ", status=" + status + "]";
+	}
+	
+	// convert task object to json string
+	public String toJsonString() {
+		return String.format("{\"id\":%d,\"title\":\"%s\",\"description\":\"%s\",\"status\":\"%s\"}", id, title,
+				description, status);
 	}
 
 }
