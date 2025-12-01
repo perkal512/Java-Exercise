@@ -44,7 +44,7 @@ public class Main {
                         existing.setTitle(sc.nextLine());
                         System.out.print("New description: ");
                         existing.setDescription(sc.nextLine());
-                        System.out.println("Set Status: ");
+//                        System.out.println("Set Status: ");
                         repo.update(existing);
                     } else {
                         System.out.println("Task id doesn't exist");
