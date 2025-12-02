@@ -44,6 +44,7 @@ public class Main {
 					System.out.print("Please enter task description: ");
 					String desc = sc.nextLine();
 					repo.add(new Task(uid, title, desc, Task.Status.NEW));
+					System.out.println("Task added successfully!");
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid input! Please enter a valid number.");
 				}
@@ -78,6 +79,7 @@ public class Main {
 					existing = repo.getById(uid);
 					if (existing != null) {
 						repo.delete(uid);
+						System.out.println("Task delete");
 					} else {
 						System.out.println("Task ID not found.");
 					}
@@ -120,6 +122,7 @@ public class Main {
 					existing = repo.getById(uid);
 					if (existing != null) {
 						service.markDone(uid);
+						System.out.println("Status task update successfully!");
 					} else {
 						System.out.println("Task ID not found.");
 					}
