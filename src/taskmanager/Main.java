@@ -6,7 +6,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		TaskRepository repo = new TaskRepository("tasks.json");
+		TaskRepository repo = new TaskRepository("data/tasks.json");
 		TaskService service = new TaskService(repo);
 
 		while (true) {

@@ -5,14 +5,17 @@ import java.util.List;
 
 public class IncreasingSubsequences {
 
-	// According to the input and output example,
-	// we need to traverse the array and find the ascending contiguous sub arrays.
-	// Divide the array into ascending sub arrays
-	// input:
-	//	•	[1, 2, 3, 1, 2]
-	// output:
-	//	•	[1,2,3]
-	//	•	[1,2]
+// Algorithm to find contiguous increasing subsequences in an array
+// Rationale:
+// In the assignment example, we were asked to find all increasing subsequences
+// in the array [1, 2, 3, 1, 2], with the expected output:
+// [1, 2, 3]
+// [1, 2]
+//
+// Therefore, to meet the requirements exactly:
+//  We only search for contiguous subsequences, as shown in the example.
+//  We check that the sequence has length > 1 before adding it,
+//	    to match the output format in the example.
 
 	public static List<List<Integer>> findIncreasingSubarrays(int[] arr) {
 		List<List<Integer>> result = new ArrayList<>();
