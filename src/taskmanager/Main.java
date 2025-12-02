@@ -10,7 +10,7 @@ public class Main {
 		TaskService service = new TaskService(repo);
 
 		while (true) {
-
+			
 			System.out.println("\n--- TODO LIST MENU ---");
 			System.out.println("1. Add task");
 			System.out.println("2. Update task");
@@ -86,7 +86,13 @@ public class Main {
 //			GET TASK BY ID				
 			case 5:
 				System.out.print("Enter ID: ");
-				System.out.println(repo.getById(Integer.parseInt(sc.nextLine())));
+				uid = Integer.parseInt(sc.nextLine());
+				existing = repo.getById(uid);
+				if (existing != null) {
+					System.out.println(existing);
+				} else {
+					System.out.println("Task ID not found.");
+				}
 				break;
 
 //				MARK DONE TASK				
@@ -97,7 +103,7 @@ public class Main {
 				if (existing != null) {
 					service.markDone(uid);
 				} else {
-					System.out.println("ID dosn't exist");
+					System.out.println("Task ID not found.");
 				}
 				break;
 
@@ -123,12 +129,14 @@ public class Main {
 				break;
 
 			case 9:
+				System.out.println("Exiting application. Goodby!");
+				sc.close();
 				return;
 
 			default:
 				System.out.println("Invalid choice");
 			}
 		}
-
+		
 	}
 }
