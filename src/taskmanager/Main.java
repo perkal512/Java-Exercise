@@ -2,13 +2,11 @@ package taskmanager;
 
 import java.util.*;
 
-import taskmanager.Task.Status;
-
 public class Main {
- 	private static final Scanner sc = new Scanner(System.in);
- 	private static final TaskRepository repo = new TaskRepository("tasks.json");
+
 	public static void main(String[] args) {
-		
+		Scanner sc = new Scanner(System.in);
+		TaskRepository repo = new TaskRepository("tasks.json");
 		TaskService service = new TaskService(repo);
 
 		while (true) {
@@ -28,64 +26,71 @@ public class Main {
 			int choice = Integer.parseInt(sc.nextLine());
 
 			switch (choice) {
+//			ADD TASK
 			case 1:
-				addTask();
-//				System.out.print("ID to update: ");
-//				int uid = Integer.parseInt(sc.nextLine());
-//				Task existing = repo.getById(uid);
-//				if (existing != null) {
-//					System.out.print("ID existing, please enter another ID: ");
-//				} else {
-//					System.out.print("Please enter task title: ");
-//					String title = sc.nextLine();
-//					System.out.print("Please enter task description: ");
-//					String desc = sc.nextLine();
-//					repo.add(new Task(0, title, desc, Task.Status.NEW));
-//				}
-				break;
-
-			case 2:
-				System.out.print("ID to update: ");
+				System.out.print("Enter task ID: ");
 				int uid = Integer.parseInt(sc.nextLine());
 				Task existing = repo.getById(uid);
+				while (existing != null) {
+					System.out.println("ID already exists. Please enter a different ID.");
+					uid = Integer.parseInt(sc.nextLine());
+					existing = repo.getById(uid);
+				}
+				System.out.print("Please enter task title: ");
+				String title = sc.nextLine();
+				System.out.print("Please enter task description: ");
+				String desc = sc.nextLine();
+				repo.add(new Task(uid, title, desc, Task.Status.NEW));
+				break;
+
+//			UPDATE TASK				
+			case 2:
+				System.out.print("Enter ID to update: ");
+				uid = Integer.parseInt(sc.nextLine());
+				existing = repo.getById(uid);
 				if (existing != null) {
 					System.out.print("New title: ");
 					existing.setTitle(sc.nextLine());
 					System.out.print("New description: ");
 					existing.setDescription(sc.nextLine());
-//                        System.out.println("Set Status: ");
 					repo.update(existing);
+					System.out.println("Task update successfully!");
 				} else {
-					System.out.println("Task id doesn't exist");
+					System.out.println("Task ID not found.");
 				}
 				break;
 
+//			DELETE TASK				
 			case 3:
-				System.out.print("ID to delete: ");
+				System.out.print("Enter ID to delete: ");
 				uid = Integer.parseInt(sc.nextLine());
 				existing = repo.getById(uid);
 				if (existing != null) {
 					repo.delete(uid);
 				} else {
-					System.out.println("Task id doesn't exist");
+					System.out.println("Task ID not found.");
 				}
 				break;
 
+//			GET LIST TASK				
 			case 4:
 				List<Task> list = repo.listAll();
 				if (!list.isEmpty()) {
 					list.forEach(System.out::println);
 				} else {
-					System.out.println("There is no tasks in json file");
+					System.out.println("No tasks found.");
 				}
 				break;
 
+//			GET TASK BY ID				
 			case 5:
-				System.out.print("ID: ");
+				System.out.print("Enter ID: ");
 				System.out.println(repo.getById(Integer.parseInt(sc.nextLine())));
 				break;
+
+//				MARK DONE TASK				
 			case 6:
-				System.out.print("ID to mark done: ");
+				System.out.print("Enter ID to mark done: ");
 				uid = Integer.parseInt(sc.nextLine());
 				existing = repo.getById(uid);
 				if (existing != null) {
@@ -95,14 +100,25 @@ public class Main {
 				}
 				break;
 
+//			SEARCH TASK BY TEXT
 			case 7:
-//				לבדוק האם יותר יפה שאם לא מצא TEXT שיציד הודעה למשתמש לא נמצא
 				System.out.print("Search text: ");
-				service.search(sc.nextLine()).forEach(System.out::println);
+				String text = sc.nextLine();
+				List<Task> result = service.search(text);
+				if (result.isEmpty()) {
+					System.out.println("No tasks found.");
+				} else {
+					result.forEach(System.out::println);
+				}
 				break;
 
+//			SORT TASKS BY STATUS
 			case 8:
-				service.listSortedByStatus().forEach(System.out::println);
+				List<Task> sorted = service.listSortedByStatus();
+				if (sorted.isEmpty()) {
+					System.out.println("No tasks found.");
+				}
+				sorted.forEach(System.out::println);
 				break;
 
 			case 9:
@@ -112,34 +128,6 @@ public class Main {
 				System.out.println("Invalid choice");
 			}
 		}
-	}
 
-	private static void addTask() {
-		int id;
-
-		// Step 1: Ask for ID until it's NOT already in use
-		while (true) {
-			System.out.print("Enter task ID: ");
-			id = Integer.parseInt(sc.nextLine());
-//			func taskExists
-			if (repo.getById(id) != null) {
-				System.out.println("ID already exists. Please enter a different ID.");
-			} else {
-				break; // ID is free → continue
-			}
-		}
-
-		// Step 2: Collect title & description
-		System.out.print("Enter task title: ");
-		String title = sc.nextLine();
-
-		System.out.print("Enter task description: ");
-		String description = sc.nextLine();
-
-		// Step 3: Create and save the task
-		Task newTask = new Task(id, title, description, Status.NEW);
-		repo.add(newTask);
-
-		System.out.println("Task added successfully!");
 	}
 }

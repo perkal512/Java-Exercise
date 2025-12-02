@@ -6,10 +6,8 @@ import java.io.*;
 import taskmanager.Task.Status;
 
 public class TaskRepository {
-	// ConcurrentHashMap allows safe concurrent access for reads and writes
 	private Map<Integer, Task> tasks = new HashMap<>();
 	private final File file;
-	private int maxId = 0; // automatic unique ID
 
 	public TaskRepository(String filePath) {
 		file = new File(filePath);
@@ -74,11 +72,8 @@ public class TaskRepository {
 			for (String objJson : objects) {
 				Task task = fromJsonTask(objJson);
 				int id = task.getId();
-				if (id > 0) {
+				if (id != -1)
 					tasks.put(id, task);
-					if (id > maxId)
-						maxId = id;
-				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,6 +96,8 @@ public class TaskRepository {
 		}
 	}
 
+	// Currently, auxiliary functions are not in a separate UTILS file because there is no immediate need.
+	// 	They may be moved in the future if the code expands.
 	private Task fromJsonTask(String json) {
 		json = json.trim();
 		if (json.startsWith("{"))
