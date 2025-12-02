@@ -5,7 +5,6 @@ import java.util.List;
 public class Main {
 
 	public static void main(String[] args) {
-		
 		int[] arr = { 1, 2, 3, 1, 2 };
 		List<List<Integer>> res = IncreasingSubsequences.findIncreasingSubarrays(arr);
 
@@ -15,5 +14,5 @@ public class Main {
 		}
 
 	}
-	
+
 }

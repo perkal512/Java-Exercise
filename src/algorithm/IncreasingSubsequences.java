@@ -5,8 +5,16 @@ import java.util.List;
 
 public class IncreasingSubsequences {
 
-	public static List<List<Integer>> findIncreasingSubarrays(int[] arr) {
+	// According to the input and output example,
+	// we need to traverse the array and find the ascending contiguous sub arrays.
+	// Divide the array into ascending sub arrays
+	// input:
+	//	•	[1, 2, 3, 1, 2]
+	// output:
+	//	•	[1,2,3]
+	//	•	[1,2]
 
+	public static List<List<Integer>> findIncreasingSubarrays(int[] arr) {
 		List<List<Integer>> result = new ArrayList<>();
 
 		if (arr == null || arr.length == 0) {

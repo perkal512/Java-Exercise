@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TaskService {
-	
 	private final TaskRepository repository;
 
     public TaskService(TaskRepository repository) {
