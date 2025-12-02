@@ -24,13 +24,14 @@ public class Main {
 			System.out.print("Choose: ");
 
 			int choice = Integer.parseInt(sc.nextLine());
-
+			int uid;
+			Task existing;
 			switch (choice) {
 //			ADD TASK
 			case 1:
 				System.out.print("Enter task ID: ");
-				int uid = Integer.parseInt(sc.nextLine());
-				Task existing = repo.getById(uid);
+				uid = Integer.parseInt(sc.nextLine());
+				existing = repo.getById(uid);
 				while (existing != null) {
 					System.out.println("ID already exists. Please enter a different ID.");
 					uid = Integer.parseInt(sc.nextLine());
