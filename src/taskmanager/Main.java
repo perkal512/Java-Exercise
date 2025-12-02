@@ -10,7 +10,7 @@ public class Main {
 		TaskService service = new TaskService(repo);
 
 		while (true) {
-			
+
 			System.out.println("\n--- TODO LIST MENU ---");
 			System.out.println("1. Add task");
 			System.out.println("2. Update task");
@@ -29,47 +29,59 @@ public class Main {
 			switch (choice) {
 //			ADD TASK
 			case 1:
-				System.out.print("Enter task ID: ");
-				uid = Integer.parseInt(sc.nextLine());
-				existing = repo.getById(uid);
-				while (existing != null) {
-					System.out.println("ID already exists. Please enter a different ID.");
+				try {
+					System.out.print("Enter task ID: ");
 					uid = Integer.parseInt(sc.nextLine());
 					existing = repo.getById(uid);
+					while (existing != null) {
+						System.out.println("ID already exists. Please enter a different ID.");
+						uid = Integer.parseInt(sc.nextLine());
+						existing = repo.getById(uid);
+					}
+					System.out.print("Please enter task title: ");
+					String title = sc.nextLine();
+					System.out.print("Please enter task description: ");
+					String desc = sc.nextLine();
+					repo.add(new Task(uid, title, desc, Task.Status.NEW));
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input! Please enter a valid number.");
 				}
-				System.out.print("Please enter task title: ");
-				String title = sc.nextLine();
-				System.out.print("Please enter task description: ");
-				String desc = sc.nextLine();
-				repo.add(new Task(uid, title, desc, Task.Status.NEW));
 				break;
 
 //			UPDATE TASK				
 			case 2:
-				System.out.print("Enter ID to update: ");
-				uid = Integer.parseInt(sc.nextLine());
-				existing = repo.getById(uid);
-				if (existing != null) {
-					System.out.print("New title: ");
-					existing.setTitle(sc.nextLine());
-					System.out.print("New description: ");
-					existing.setDescription(sc.nextLine());
-					repo.update(existing);
-					System.out.println("Task update successfully!");
-				} else {
-					System.out.println("Task ID not found.");
+				try {
+					System.out.print("Enter ID to update: ");
+					uid = Integer.parseInt(sc.nextLine());
+					existing = repo.getById(uid);
+					if (existing != null) {
+						System.out.print("New title: ");
+						existing.setTitle(sc.nextLine());
+						System.out.print("New description: ");
+						existing.setDescription(sc.nextLine());
+						repo.update(existing);
+						System.out.println("Task update successfully!");
+					} else {
+						System.out.println("Task ID not found.");
+					}
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input! Please enter a valid number.");
 				}
 				break;
 
 //			DELETE TASK				
 			case 3:
-				System.out.print("Enter ID to delete: ");
-				uid = Integer.parseInt(sc.nextLine());
-				existing = repo.getById(uid);
-				if (existing != null) {
-					repo.delete(uid);
-				} else {
-					System.out.println("Task ID not found.");
+				try {
+					System.out.print("Enter ID to delete: ");
+					uid = Integer.parseInt(sc.nextLine());
+					existing = repo.getById(uid);
+					if (existing != null) {
+						repo.delete(uid);
+					} else {
+						System.out.println("Task ID not found.");
+					}
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input! Please enter a valid number.");
 				}
 				break;
 
@@ -85,25 +97,33 @@ public class Main {
 
 //			GET TASK BY ID				
 			case 5:
-				System.out.print("Enter ID: ");
-				uid = Integer.parseInt(sc.nextLine());
-				existing = repo.getById(uid);
-				if (existing != null) {
-					System.out.println(existing);
-				} else {
-					System.out.println("Task ID not found.");
+				try {
+					System.out.print("Enter ID: ");
+					uid = Integer.parseInt(sc.nextLine());
+					existing = repo.getById(uid);
+					if (existing != null) {
+						System.out.println(existing);
+					} else {
+						System.out.println("Task ID not found.");
+					}
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input! Please enter a valid number.");
 				}
 				break;
 
 //				MARK DONE TASK				
 			case 6:
-				System.out.print("Enter ID to mark done: ");
-				uid = Integer.parseInt(sc.nextLine());
-				existing = repo.getById(uid);
-				if (existing != null) {
-					service.markDone(uid);
-				} else {
-					System.out.println("Task ID not found.");
+				try {
+					System.out.print("Enter ID to mark done: ");
+					uid = Integer.parseInt(sc.nextLine());
+					existing = repo.getById(uid);
+					if (existing != null) {
+						service.markDone(uid);
+					} else {
+						System.out.println("Task ID not found.");
+					}
+				} catch (NumberFormatException e) {
+					System.out.println("Invalid input! Please enter a valid number.");
 				}
 				break;
 
@@ -137,6 +157,6 @@ public class Main {
 				System.out.println("Invalid choice");
 			}
 		}
-		
+
 	}
 }
