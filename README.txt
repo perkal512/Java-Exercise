@@ -1,105 +1,62 @@
-TODO Application – Java Console Project
-=======================================
+Project Overview
+----------------
 
-תיאור כללי
------------
-פרויקט זה מממש מערכת פשוטה לניהול משימות (Todo List) בשפת Java, ללא שימוש בספריות חיצוניות.
-המערכת מאפשרת: יצירת משימות, עדכון, מחיקה, חיפוש, סימון כ-DONE, הצגת משימות ומיון לפי סטטוס.
-בנוסף קיים פתרון לחלק האלגוריתמי ולחלק ה-DESIGN.
+Description:
+This is a Java application to manage a Todo List. It implements full CRUD operations on tasks and provides additional functionalities like searching, marking tasks as DONE, and sorting by status. Tasks are persisted in a JSON file (tasks.json).
 
----------------------------------------
-מבנה הפרויקט
----------------------------------------
-src/
- └── taskmanager/
-     ├── Task.java                – מייצג אובייקט Task כולל enum Status
-     ├── TaskRepository.java      – ניהול משימות בקובץ JSON כולל add, update, delete, getById, listAll (פעולות CRUD)
-     ├── TaskService.java         – לוגיקה נוספת: חיפוש, סימון DONE, מיון לפי סטטוס
-     └── Main.java                – ממשק טקסטואלי (Console UI) שמדגים את כל הפונקציות
-
- └── algorithm/
-     ├── IncreasingSubsequences.java – פונקציה למציאת תתי־רצפים עולים (strictly increasing)
-     └── Main.java                   – הדגמת הפתרון האלגוריתמי
+Note:
+The application safely handles invalid task entries in tasks.json.
+Empty files or improperly formatted data will not crash the program.
 
 
- └── tasks.json – קובץ נתונים שבו נשמרות המשימות
+Project Structure
+-----------------
+src/taskmanager/
+    Main.java - console UI menu
+    Task.java - Task model (Id, Title, Description, Status enum)
+    TaskRepository.java - Handles CRUD operations on tasks.json
+    TaskService.java - Implements additional logic: markDone, search, sort
 
----------------------------------------
-הוראות הרצה
----------------------------------------
-1. פתחו את הפרויקט ב-Eclipse / IntelliJ.
-2. ודאו שהקובץ tasks.json נמצא בתקיית data (באותה רמה כמו src).
-3. הריצו את הקובץ:  
-   taskmanager.Main
-4. יוצג תפריט Console:
+data/
+    tasks.json - Stores task data in JSON format
 
-   --- TODO LIST MENU ---
-   1. Add task
-   2. Update task
-   3. Delete task
-   4. List all
-   5. Get by ID
-   6. Mark as DONE
-   7. Search
-   8. Sort by status
-   9. Exit
+src/design/
+    Library.md - Design REST API for library
+    OrdersAndPayments.md - Design REST API for Orders + Payments system 
 
-5. הזינו מספר ובצעו פעולה בהתאם.
+src/algorithms/
+	Main.java - console UI 
+    IncreasingSubsequences.java - Solution for strictly increasing subarrays 
 
----------------------------------------
-טכנולוגיות וכלים
----------------------------------------
-• Java Standard Edition בלבד  
-• ניהול נתונים בקובץ JSON ללא ספריות  
-• ניהול גרסאות באמצעות Git  
-• קומיטים קטנים ומתועדים בהתאם להנחיות
+Requirements
+------------
+- Java JDK 8 or higher
+- Eclipse IDE or any Java IDE
+- No external libraries required
 
----------------------------------------
-תיאור החלטות תכנון (Design Decisions)
----------------------------------------
-• הפרדת שכבות:
-  - TaskRepository אחראית על אחסון ושליפה מ־JSON.
-  - TaskService אחראית על הלוגיקה העסקית.
-  - Task אחראית על ייצוג הדומיין בלבד.
-  - Main מדגים שימוש ומנהל UI פשוט.
+Running the Application
+-----------------------
+1. Open the project in your IDE.
+2. Ensure `data/tasks.json` exists; the program will create it if missing.
+3. Run the `Main.java` class.
+4. Use the console menu to perform task operations:
+   - Option 1: Add a task (unique numeric ID required)
+   - Option 2: Update a task
+   - Option 3: Delete a task
+   - Option 4: List all tasks
+   - Option 5: Get task by ID
+   - Option 6: Mark task as DONE
+   - Option 7: Search tasks by text
+   - Option 8: Sort tasks by status
+   - Option 9: Exit application
+5. Invalid numeric input is handled with try-catch to prevent crashes.
 
-• הוחלט לא להשתמש בספריות JSON ולכן serialize/deserialize מומשו ידנית.
+Notes
+-----
+- All code follows clean OOP principles with separation of concerns:
+  - TaskRepository handles data persistence
+  - TaskService handles business logic
+  - Main handles user interaction
+- Tasks are stored persistently in `data/tasks.json`.
+- The project is organized into packages and folders for clarity and maintainability.
 
-• מיון לפי סטטוס נעשה באמצעות Comparator.
-
-• בחיפוש, הטקסט נבדק ב-title וב-description כדי להחזיר תוצאות רלוונטיות.
-
----------------------------------------
-חלק 2: אלגוריתם – תתי־רצפים עולים
----------------------------------------
-המחלקה IncreasingSubsequences מממשת:
-• סריקה של המערך  
-• זיהוי רצפים עולים עוקביים בלבד  
-• החזרת רשימה של כל הרצפים
-
----------------------------------------
-חלק 3: DESIGN (בקצרה)
----------------------------------------
-
-1. REST API למערכת ספרייה
-   Endpoints לדוגמה:
-   - GET /books
-   - POST /books
-   - GET /books/{id}
-   - PUT /books/{id}
-   - DELETE /books/{id}
-
-   DTOs:
-   - BookDTO: id, title, author, year, available (שדות חובה: title, author)
-
-2. מערכת "הזמנות + תשלומים"
-   מחלקות לדוגמה:
-   - Order: מייצגת הזמנה
-   - Payment: מייצגת תשלום
-   - PaymentService: טיפול בתשלומים
-   - OrderService: ניהול הזמנות
-
-   איך מוודאים התאמה:
-   - לכל Payment יש orderId
-   - לפני עיבוד תשלום, בודקים שההזמנה קיימת ותקינה
-   - שימוש במודל של Responsibility Separation

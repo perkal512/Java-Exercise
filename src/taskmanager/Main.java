@@ -29,6 +29,7 @@ public class Main {
 			switch (choice) {
 //			ADD TASK
 			case 1:
+//				Invalid numeric input is handled with try-catch to prevent crashes
 				try {
 					System.out.print("Enter task ID: ");
 					uid = Integer.parseInt(sc.nextLine());
