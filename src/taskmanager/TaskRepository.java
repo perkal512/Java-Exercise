@@ -9,12 +9,14 @@ public class TaskRepository {
 	private Map<Integer, Task> tasks = new HashMap<>();
 	private final File file;
 
+//  The constructor Checks if the JSON file exists:
+//  If yes, loads tasks from the file
+//  If no, creates a new empty file
 	public TaskRepository(String filePath) {
 		file = new File(filePath);
 		if (file.exists()) {
 			loadTasks();
 		} else {
-//			if the file dosn't exist we save empty list.
 			saveToFile();
 		}
 	}
@@ -69,6 +71,7 @@ public class TaskRepository {
 					}
 				}
 			}
+
 			for (String objJson : objects) {
 				Task task = fromJsonTask(objJson);
 				int id = task.getId();
@@ -96,8 +99,11 @@ public class TaskRepository {
 		}
 	}
 
-	// Currently, auxiliary functions are not in a separate UTILS file because there is no immediate need.
-	// 	They may be moved in the future if the code expands.
+//  Currently, the JSON-to-Task conversion function is inside this class that handles JSON files.
+//  For the current project , this is fine.
+//  If the project grows, we might consider moving this function to a separate Utils class to manage helper functions in one place.
+	
+//  Convert a JSON string to a Task object 
 	private Task fromJsonTask(String json) {
 		json = json.trim();
 		if (json.startsWith("{"))
@@ -105,6 +111,10 @@ public class TaskRepository {
 		if (json.endsWith("}"))
 			json = json.substring(0, json.length() - 1);
 
+// 		Default values ensure safe and predictable JSON loading:
+// 		- Protect against missing fields or malformed JSON
+// 		- Allow parsing to continue even when some data is invalid
+// 		- id = -1 indicates an invalid task, preventing it from being added to the repository
 		int id = -1;
 		String title = "", description = "";
 		Status status = Status.NEW;
